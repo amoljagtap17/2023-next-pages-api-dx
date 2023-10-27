@@ -1,8 +1,7 @@
-import { Document } from "mongoose";
 import { CrudOperations } from "../utils";
 import { AbstractService } from "./abstract.service";
 
-export class BaseService<T extends Document> extends AbstractService<T> {
+export class BaseService<T> extends AbstractService<T> {
   private crud: CrudOperations<T>;
 
   constructor(model: any) {

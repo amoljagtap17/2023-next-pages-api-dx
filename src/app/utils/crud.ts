@@ -1,6 +1,6 @@
-import { Document, FilterQuery, Model } from "mongoose";
+import { FilterQuery, Model } from "mongoose";
 
-export class CrudOperations<T extends Document> {
+export class CrudOperations<T> {
   private model: Model<T>;
 
   constructor(model: Model<T>) {
@@ -32,7 +32,7 @@ export class CrudOperations<T extends Document> {
   async create(data: Partial<T>): Promise<T> {
     const instance = new this.model(data);
 
-    return await instance.save();
+    return (await instance.save()) as unknown as T;
   }
 
   async findByIdAndUpdate(id: string, data: Partial<T>): Promise<T | null> {

@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export abstract class AbstractService<T extends Document> {
+export abstract class AbstractService<T> {
   abstract find(filters?: any): Promise<T[]>;
 
   abstract findById(id: string): Promise<T | null>;
