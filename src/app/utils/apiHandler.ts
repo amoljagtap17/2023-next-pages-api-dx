@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiHandlerConfig } from "../interfaces";
+import { ApiError } from "./errors";
 
 const logger = (
   req: NextApiRequest,
@@ -27,10 +28,18 @@ export const apiHandler =
 
       // await connectDB();
 
-      return matchingHandler.handler(req, res);
+      await matchingHandler.handler(req, res);
     } catch (error) {
-      return res.status(500).json({
-        error: (error as Error).message || "Internal Server Error",
-      });
+      handleError(error, res);
     }
   };
+
+const handleError = (error: any, res: NextApiResponse) => {
+  if (error instanceof ApiError) {
+    res.status(error.statusCode).json({ error: error.message });
+  } else {
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Internal Server Error" });
+  }
+};

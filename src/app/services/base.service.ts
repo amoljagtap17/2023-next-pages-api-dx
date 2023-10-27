@@ -1,4 +1,5 @@
 import { CrudOperations } from "../utils";
+import { ApiError } from "../utils/errors";
 import { AbstractService } from "./abstract.service";
 
 export class BaseService<T> extends AbstractService<T> {
@@ -11,30 +12,58 @@ export class BaseService<T> extends AbstractService<T> {
   }
 
   async find(filters?: any): Promise<T[]> {
-    return this.crud.find(filters);
+    try {
+      return await this.crud.find(filters);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.crud.findById(id);
+    try {
+      return await this.crud.findById(id);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async findOne(conditions: any): Promise<T | null> {
-    return this.crud.findOne(conditions);
+    try {
+      return await this.crud.findOne(conditions);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async findMultipleByIds(ids: string[]): Promise<T[]> {
-    return this.crud.findMultipleByIds(ids);
+    try {
+      return await this.crud.findMultipleByIds(ids);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async create(data: Partial<T>): Promise<T> {
-    return this.crud.create(data);
+    try {
+      return await this.crud.create(data);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async findByIdAndUpdate(id: string, data: Partial<T>): Promise<T | null> {
-    return this.crud.findByIdAndUpdate(id, data);
+    try {
+      return await this.crud.findByIdAndUpdate(id, data);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 
   async findByIdAndRemove(id: string): Promise<T | null> {
-    return this.crud.findByIdAndRemove(id);
+    try {
+      return await this.crud.findByIdAndRemove(id);
+    } catch (error) {
+      throw new ApiError(500, (error as Error).message);
+    }
   }
 }

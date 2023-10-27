@@ -1,13 +1,20 @@
 import { HandlerOptions, HttpMethod } from "@/app/interfaces";
+import { ProductService } from "@/app/services";
 import { apiHandler } from "@/app/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const GET = (req: NextApiRequest, res: NextApiResponse) => {
-  res.json({ data: "GET response" });
+const productService = new ProductService();
+
+const GET = async (req: NextApiRequest, res: NextApiResponse) => {
+  const products = await productService.find();
+
+  res.json({ data: products });
 };
 
-const POST = (req: NextApiRequest, res: NextApiResponse) => {
-  res.json({ data: "POST response" });
+const POST = async (req: NextApiRequest, res: NextApiResponse) => {
+  const product = await productService.create({ name: "test" });
+
+  res.json({ data: product });
 };
 
 const handlers: HandlerOptions[] = [
