@@ -8,12 +8,10 @@ export const authConfig = {
       name: "Credentials",
       type: "credentials",
       credentials: {
-        username: { label: "Email", type: "email" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log("inside authorize::", credentials);
-
         const user = {
           id: "123",
           name: "John Doe",
@@ -29,7 +27,4 @@ export const authConfig = {
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-  },
 } satisfies NextAuthOptions;

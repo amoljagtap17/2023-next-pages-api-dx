@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authConfig } from "../auth";
 import { ApiHandlerConfig } from "../interfaces";
 import { ApiError } from "./errors";
 
@@ -8,6 +10,22 @@ const logger = (
   next: VoidFunction
 ) => {
   console.log(`[API] ${req.method} ${req.url}`);
+
+  next();
+};
+
+const authenticate = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: VoidFunction
+) => {
+  const session = await getServerSession(req, res, authConfig);
+
+  console.log("authenticate::", session);
+
+  if (!session) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
 
   next();
 };
@@ -25,6 +43,8 @@ export const apiHandler =
 
       // Middleware execution
       logger(req, res, () => {});
+
+      await authenticate(req, res, () => {});
 
       // await connectDB();
 
