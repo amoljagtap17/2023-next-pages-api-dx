@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { ROLES_ENUM } from "../utils";
 
 export const authConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const authConfig = {
           name: "John Doe",
           email: "john.doe@test.com",
           picture: "http://unsplash/avatar",
-          roles: ["admin"],
+          roles: [ROLES_ENUM.USER, ROLES_ENUM.ADMIN],
         };
 
         if (user) {

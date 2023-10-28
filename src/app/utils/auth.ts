@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { HTTP_STATUS_CODES } from ".";
+import { HTTP_STATUS_CODES, ROLES_ENUM } from ".";
 import { authConfig } from "../auth";
 
 export const authenticate = async (
@@ -22,7 +22,7 @@ export const authenticate = async (
 export const authorize = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  requiredRoles?: string[]
+  requiredRoles?: ROLES_ENUM[]
 ) => {
   if (!requiredRoles) return;
 

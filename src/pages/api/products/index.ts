@@ -1,6 +1,6 @@
 import { HandlerOptions, HttpMethod } from "@/app/interfaces";
 import { ProductService } from "@/app/services";
-import { apiHandler } from "@/app/utils";
+import { ROLES_ENUM, apiHandler } from "@/app/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const productService = new ProductService();
@@ -19,9 +19,9 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const handlers: HandlerOptions[] = [
   { method: "GET" as HttpMethod, handler: GET },
-  { method: "POST" as HttpMethod, handler: POST },
+  { method: "POST" as HttpMethod, handler: POST, roles: [ROLES_ENUM.ADMIN] },
 ];
 
-const defaultRoles = ["user", "admin"];
+const defaultRoles = [ROLES_ENUM.USER, ROLES_ENUM.ADMIN];
 
 export default apiHandler({ defaultRoles, handlers });
