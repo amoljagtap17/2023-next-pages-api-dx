@@ -31,6 +31,6 @@ export const apiHandler =
 
       await matchingHandler.handler(req, res);
     } catch (error) {
-      return handleError(error, res);
+      return handleError(error as Error, res);
     }
   };

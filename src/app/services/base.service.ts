@@ -1,5 +1,5 @@
-import { CrudOperations, HTTP_STATUS_CODES } from "../utils";
-import { ApiError } from "../utils/errors";
+import { CrudOperations } from "../utils";
+import { ApiError } from "../utils/error";
 import { AbstractService } from "./abstract.service";
 
 export class BaseService<T> extends AbstractService<T> {
@@ -15,10 +15,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.find(filters);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -26,10 +23,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.findById(id);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -37,10 +31,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.findOne(conditions);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -48,10 +39,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.findMultipleByIds(ids);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -59,10 +47,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.create(data);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -70,10 +55,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.findByIdAndUpdate(id, data);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 
@@ -81,10 +63,7 @@ export class BaseService<T> extends AbstractService<T> {
     try {
       return await this.crud.findByIdAndRemove(id);
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-        (error as Error).message
-      );
+      throw new ApiError(error as Error);
     }
   }
 }
