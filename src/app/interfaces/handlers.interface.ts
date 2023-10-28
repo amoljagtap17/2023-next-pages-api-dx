@@ -7,6 +7,7 @@ export interface HandlerOptions {
   method: HttpMethod;
   handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
   roles?: ROLES_ENUM[];
+  bodySchema?: any;
 }
 
 export interface ApiHandlerConfig {

@@ -1,4 +1,5 @@
 import { HandlerOptions, HttpMethod } from "@/app/interfaces";
+import { createProductSchema } from "@/app/schemas";
 import { ProductService } from "@/app/services";
 import { ROLES_ENUM, apiHandler } from "@/app/utils";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -12,14 +13,21 @@ const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const POST = async (req: NextApiRequest, res: NextApiResponse) => {
-  const product = await productService.create({ name: "test" });
+  const body = req.body;
+
+  const product = await productService.create(body);
 
   res.json({ data: product });
 };
 
 const handlers: HandlerOptions[] = [
   { method: "GET" as HttpMethod, handler: GET },
-  { method: "POST" as HttpMethod, handler: POST, roles: [ROLES_ENUM.ADMIN] },
+  {
+    method: "POST" as HttpMethod,
+    handler: POST,
+    roles: [ROLES_ENUM.ADMIN],
+    bodySchema: createProductSchema,
+  },
 ];
 
 const defaultRoles = [ROLES_ENUM.USER, ROLES_ENUM.ADMIN];

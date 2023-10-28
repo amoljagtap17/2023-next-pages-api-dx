@@ -3,6 +3,7 @@ import { HTTP_STATUS_CODES, authenticate, authorize, logger } from ".";
 import { ApiHandlerConfig } from "../interfaces";
 import { connectDB } from "./connectDB";
 import { handleError } from "./errors";
+import { validateBody } from "./validation";
 
 export const apiHandler =
   (config: ApiHandlerConfig) =>
@@ -21,6 +22,10 @@ export const apiHandler =
 
       await authenticate(req, res);
       await authorize(req, res, matchingHandler.roles || config.defaultRoles);
+
+      if (matchingHandler.bodySchema) {
+        await validateBody(req.body, matchingHandler.bodySchema);
+      }
 
       await connectDB();
 
