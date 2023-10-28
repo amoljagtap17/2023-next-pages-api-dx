@@ -16,6 +16,7 @@ export const authConfig = {
           id: "123",
           name: "John Doe",
           email: "john.doe@test.com",
+          picture: "http://unsplash/avatar",
           roles: ["admin"],
         };
 
@@ -27,4 +28,24 @@ export const authConfig = {
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        // @ts-ignore
+        token.roles = user.roles;
+        // @ts-ignore
+        token.picture = user.picture;
+      }
+
+      return token;
+    },
+    session({ token, session }) {
+      if (token?.roles) {
+        // @ts-ignore
+        session.user.roles = token.roles;
+      }
+
+      return session;
+    },
+  },
 } satisfies NextAuthOptions;

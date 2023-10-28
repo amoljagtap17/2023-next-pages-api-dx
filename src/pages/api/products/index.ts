@@ -22,4 +22,6 @@ const handlers: HandlerOptions[] = [
   { method: "POST" as HttpMethod, handler: POST },
 ];
 
-export default apiHandler({ handlers });
+const defaultRoles = ["user", "admin"];
+
+export default apiHandler({ defaultRoles, handlers });

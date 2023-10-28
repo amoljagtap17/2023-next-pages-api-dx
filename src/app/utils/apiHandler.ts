@@ -2,32 +2,39 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authConfig } from "../auth";
 import { ApiHandlerConfig } from "../interfaces";
+import { connectDB } from "./connectDB";
 import { ApiError } from "./errors";
 
-const logger = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: VoidFunction
-) => {
+const logger = (req: NextApiRequest, res: NextApiResponse) => {
   console.log(`[API] ${req.method} ${req.url}`);
-
-  next();
 };
 
-const authenticate = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: VoidFunction
-) => {
+const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerSession(req, res, authConfig);
-
-  console.log("authenticate::", session);
 
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
   }
 
-  next();
+  // @ts-ignore
+  req.session = session;
+};
+
+const authorize = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  requiredRoles?: string[]
+) => {
+  if (!requiredRoles) return;
+
+  // @ts-ignore
+  const { user } = req.session;
+
+  const rolePresent = requiredRoles.some((role) => user.roles.includes(role));
+
+  if (!rolePresent) {
+    return res.status(403).json({ error: "Role not authorized" });
+  }
 };
 
 export const apiHandler =
@@ -42,11 +49,12 @@ export const apiHandler =
       }
 
       // Middleware execution
-      logger(req, res, () => {});
+      logger(req, res);
 
-      await authenticate(req, res, () => {});
+      await authenticate(req, res);
+      await authorize(req, res, matchingHandler.roles || config.defaultRoles);
 
-      // await connectDB();
+      await connectDB();
 
       await matchingHandler.handler(req, res);
     } catch (error) {
