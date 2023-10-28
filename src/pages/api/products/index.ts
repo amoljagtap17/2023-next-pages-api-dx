@@ -1,7 +1,7 @@
 import { HandlerOptions, HttpMethod } from "@/app/interfaces";
 import { createProductSchema } from "@/app/schemas";
 import { ProductService } from "@/app/services";
-import { ROLES_ENUM, apiHandler } from "@/app/utils";
+import { HTTP_STATUS_CODES, ROLES_ENUM, apiHandler } from "@/app/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const productService = new ProductService();
@@ -9,7 +9,7 @@ const productService = new ProductService();
 const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   const products = await productService.find();
 
-  res.json({ data: products });
+  res.status(HTTP_STATUS_CODES.OK).json({ data: products });
 };
 
 const POST = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -17,7 +17,7 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const product = await productService.create(body);
 
-  res.json({ data: product });
+  res.status(HTTP_STATUS_CODES.CREATED).json({ data: product });
 };
 
 const handlers: HandlerOptions[] = [
