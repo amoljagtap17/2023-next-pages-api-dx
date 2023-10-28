@@ -12,7 +12,7 @@ export const authenticate = async (
   if (!session) {
     return res
       .status(HTTP_STATUS_CODES.UNAUTHORIZED)
-      .json({ error: "Not authenticated" });
+      .json({ errors: [{ message: "user is not authenticated" }] });
   }
 
   // @ts-ignore
@@ -34,6 +34,6 @@ export const authorize = async (
   if (!rolePresent) {
     return res
       .status(HTTP_STATUS_CODES.FORBIDDEN)
-      .json({ error: "Role not authorized" });
+      .json({ errors: [{ message: "user is not authorized" }] });
   }
 };

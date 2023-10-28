@@ -1,0 +1,62 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@baseUrl = http://{{host}}/api
+
+
+###
+
+# @name getCsrfToken
+GET {{baseUrl}}/auth/csrf HTTP/1.1
+
+###
+
+@csrfToken = {{getCsrfToken.response.body.csrfToken}}
+
+###
+
+# @name login
+POST {{baseUrl}}/auth/callback/credentials HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "email": "user@test.com",
+    "password": "test123",
+    "csrfToken": "{{csrfToken}}"
+}
+
+###
+
+# @name getUserSession
+GET {{baseUrl}}/auth/session HTTP/1.1
+Content-Type: {{contentType}}
+
+###
+
+# @name signout
+POST {{baseUrl}}/auth/signout HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "csrfToken": "{{csrfToken}}"
+}
+
+###
+
+# @name getProducts
+GET {{baseUrl}}/products HTTP/1.1
+
+###
+
+# @name createProduct
+POST {{baseUrl}}/products HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "abcd",
+    "price": 1234,
+    "unknown": "xyz"
+}
+
+###
