@@ -1,4 +1,5 @@
 import { NextApiResponse } from "next";
+import { HTTP_STATUS_CODES } from ".";
 
 export class ApiError extends Error {
   public readonly statusCode: number;
@@ -15,7 +16,7 @@ export const handleError = (error: any, res: NextApiResponse) => {
     return res.status(error.statusCode).json({ error: error.message });
   } else {
     return res
-      .status(500)
+      .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ error: (error as Error).message || "Internal Server Error" });
   }
 };

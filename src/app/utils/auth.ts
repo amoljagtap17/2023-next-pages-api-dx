@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
+import { HTTP_STATUS_CODES } from ".";
 import { authConfig } from "../auth";
 
 export const authenticate = async (
@@ -9,7 +10,9 @@ export const authenticate = async (
   const session = await getServerSession(req, res, authConfig);
 
   if (!session) {
-    return res.status(401).json({ error: "Not authenticated" });
+    return res
+      .status(HTTP_STATUS_CODES.UNAUTHORIZED)
+      .json({ error: "Not authenticated" });
   }
 
   // @ts-ignore
@@ -29,6 +32,8 @@ export const authorize = async (
   const rolePresent = requiredRoles.some((role) => user.roles.includes(role));
 
   if (!rolePresent) {
-    return res.status(403).json({ error: "Role not authorized" });
+    return res
+      .status(HTTP_STATUS_CODES.FORBIDDEN)
+      .json({ error: "Role not authorized" });
   }
 };

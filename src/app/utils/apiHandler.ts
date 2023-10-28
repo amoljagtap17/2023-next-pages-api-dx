@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { authenticate, authorize, logger } from ".";
+import { HTTP_STATUS_CODES, authenticate, authorize, logger } from ".";
 import { ApiHandlerConfig } from "../interfaces";
 import { connectDB } from "./connectDB";
 import { handleError } from "./errors";
@@ -13,7 +13,7 @@ export const apiHandler =
 
       if (!matchingHandler) {
         return res
-          .status(405)
+          .status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED)
           .json({ error: `Method ${req.method} Not Allowed` });
       }
 
